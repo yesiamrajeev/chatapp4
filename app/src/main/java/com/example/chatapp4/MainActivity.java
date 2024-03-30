@@ -3,6 +3,7 @@ package com.example.chatapp4;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -68,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
         mAdapter = new MyAdapter(this, mDataList);
         mListView.setAdapter(mAdapter);
+        Button navigateToMainButton = findViewById(R.id.top_right_button);
+        navigateToMainButton.setOnClickListener(v -> navigateToMainActivity());
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -86,7 +89,10 @@ public class MainActivity extends AppCompatActivity {
         setupListView();
         fetchUsername();
     }
-
+    private void navigateToMainActivity() {
+        startActivity(new Intent(MainActivity.this, PreMainActivity.class));
+        finish(); // Finish the current activity so the user cannot navigate back to it
+    }
     @SuppressLint("MissingPermission")
     private void fetchUserLocationAndSendMessage() {
         fusedLocationClient.getLastLocation()
@@ -116,6 +122,9 @@ public class MainActivity extends AppCompatActivity {
 
                 double distanceToKhandagiri = calculateDistance(userLat, userLong, KHANDAGIRI_LAT, KHANDAGIRI_LONG);
                 double distanceToKiitsquare = calculateDistance(userLat, userLong, KIITSQUARE_LAT, KIITSQUARE_LONG);
+
+//                double distanceToKhandagiri = calculateDistance(userLat, userLong,KIITSQUARE_LAT, KIITSQUARE_LONG );
+//                double distanceToKiitsquare = calculateDistance(userLat, userLong, KHANDAGIRI_LAT, KHANDAGIRI_LONG);
 
                 if (distanceToKhandagiri < distanceToKiitsquare) {
                     mKhandagiriDatabase.push().setValue(username + ": " + message);
@@ -175,8 +184,12 @@ public class MainActivity extends AppCompatActivity {
                             if (location != null) {
                                 double userLat = location.getLatitude();
                                 double userLong = location.getLongitude();
+
                                 double distanceToKhandagiri = calculateDistance(userLat, userLong, KHANDAGIRI_LAT, KHANDAGIRI_LONG);
                                 double distanceToKiitsquare = calculateDistance(userLat, userLong, KIITSQUARE_LAT, KIITSQUARE_LONG);
+
+//                                double distanceToKhandagiri = calculateDistance(userLat, userLong,  KIITSQUARE_LAT, KIITSQUARE_LONG);
+//                                double distanceToKiitsquare = calculateDistance(userLat, userLong,KHANDAGIRI_LAT, KHANDAGIRI_LONG);
 
                                 DatabaseReference locationDatabase;
                                 if (distanceToKhandagiri < distanceToKiitsquare) {

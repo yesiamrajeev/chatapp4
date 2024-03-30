@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Login success, navigate to MainActivity
                             Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, PreMainActivity.class);
                             startActivity(intent);
                             finish(); // Close LoginActivity to prevent returning to it using the back button
                         } else {
